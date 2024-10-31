@@ -1,37 +1,39 @@
 <script setup lang="ts">
 // importar reactive
+import { reactive } from 'vue';
 // importart useThemeStore
-
+import { useThemeStore } from './store/ThemeStore';
 // iconos
 import { MoonIcon, SunIcon, LinkIcon } from '@heroicons/vue/24/solid'
 
 // instanciar useThemeStore
+const themeStore = useThemeStore();
 // crear variable reactiva con objeto useStore
-
+const theme = reactive(themeStore);
 
 </script>
 
 <template>
   <!-- usar directiva v-bind:class para asinar clase class si isDark en el store es true -->
-  <div class="wrapper transition ease-linear">
+  <div v-bind:class="['wrapper transition ease-linear', theme.isdark ? 'dark' : '' ]">
     <div class="btn-wrapper">
       <div class="toggle-btn flex items-center justify-center w-full my-4">
         <label for="toggle" class="flex items-center justify-center cursor-pointer">
           <div class="relative">
             <!-- usar directiva @click para ejecutar el metodo para cambiar de dark a light o viceversa -->
-            <input type="checkbox" id="toggle" class="sr-only"/>
+            <input type="checkbox" id="toggle" class="sr-only" @click="theme.toggleTheme()"/>
             <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
             <div
               class="dot absolute left-1 top-1 bg-black w-6 h-6 flex items-center justify-center rounded-full transition">
               <!-- usar directiva v-if  para mostrar el icono de luna o sol usando isDark como referencia -->
-              <MoonIcon class="w-4 h-4 text-white" />
-              <SunIcon class="w-full h-full text-yellow-500 p-1" />
+              <MoonIcon class="w-4 h-4 text-white" v-if="!theme.isdark"/>
+              <SunIcon class="w-full h-full text-yellow-500 p-1" v-if="theme.isdark" />
             </div>
           </div>
 
           <!-- cambiar usar v-bind:class y atributo mode del ThemeState para cambiar el texto -->
-          <div class="label-text ml-2 font-medium">
-            Modo </div>
+          <div v-bind:class="['label-text ml-2 font-medium', theme.isdark ? 'dark' : '']"> 
+            {{ theme.mode }} </div>
         </label>
       </div>
     </div>

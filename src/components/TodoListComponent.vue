@@ -1,6 +1,8 @@
 <script setup lang="ts">
 // importar reactive
+import { reactive } from 'vue';
 // importar themeStore
+import { useThemeStore } from '@/store/ThemeStore';
 // importart taskStore
 
 
@@ -12,8 +14,9 @@ import { CheckCircleIcon as CompletedIcon } from '@heroicons/vue/24/solid'
 
 
 // definir variable para almacenar useThemeStore
+const themeStore = useThemeStore();
 // definir variable reactiva pasando objeto themeStore
-
+const theme = reactive(themeStore);
 
 // definir variable para almacenar useTaskStore
 // definir variable reactiva pasando objeto taskStore
@@ -24,7 +27,7 @@ import { CheckCircleIcon as CompletedIcon } from '@heroicons/vue/24/solid'
 
 <template>
     <!-- div: usar v-bind:class para cambiar a modo oscuro -->
-    <div class="list-wrapper max-w rounded overflow-y-auto shadow-lg mt-10 p-4 transition ease-linear">
+    <div v-bind:class="['list-wrapper max-w rounded overflow-y-auto shadow-lg mt-10 p-4 transition ease-linear', theme.isdark ? 'dark' : '']">
         
         <div class="px-6 py-4">
             <div class="font-bold text-xl mb-2">

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 // importar themeStore
+import { useThemeStore } from '@/store/ThemeStore';
 // importar taskStore
 // importar modelo de tarea
 import { reactive } from 'vue'
@@ -10,8 +11,9 @@ import { XMarkIcon, PlusCircleIcon } from '@heroicons/vue/24/outline'
 import { CheckCircleIcon as SolidCircleIcon } from '@heroicons/vue/24/solid'
 
 // definir variable para almacenar useThemeStore
+const themeStore = useThemeStore();
 // definir variable reactiva pasando objeto themeStore
-
+const theme = reactive(themeStore);
 
 // definir variable para almacenar useTaskStore
 // definir variable reactiva pasando objeto tasksStore
@@ -63,11 +65,11 @@ function saveTask() {
 
         type="text"
         placeholder="Escribe una nueva tarea"
-        class="sm:text-base overflow-ellipsis w-full focus:outline-none py-4 sm:py-4.5 pr-8 pl-14 sm:pl-16 cursor-pointer transition ease-linear"
+        v-bind:class="['sm:text-base overflow-ellipsis w-full focus:outline-none py-4 sm:py-4.5 pr-8 pl-14 sm:pl-16 cursor-pointer transition ease-linear', theme.isdark ? 'dark' : '']"
       />
 
       <!-- div: usar v-bind para definir si es modo oscuro -->
-      <div class="btns absolute right-0 top-0 py-2 sm:py-2.5 px-2 w-20 h-14 flex justify-around cursor-default transition ease-linear" >
+      <div v-bind:class="['btns absolute right-0 top-0 py-2 sm:py-2.5 px-2 w-20 h-14 flex justify-around cursor-default transition ease-linear', theme.isdark ? 'dark' : '']">
         <button  class="p-1 cursor-pointer">
           <!-- usar @click para usar metodo de guardar tareas -->
           <PlusCircleIcon class="w-6 h-6 hover:text-green-600"/>
