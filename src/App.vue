@@ -38,7 +38,7 @@ const theme = reactive(themeStore);
       </div>
     </div>
     <!-- usar directiva v-bind:class para asinar clase class si isDark en el store es true -->
-    <div class="img min-h-screen flex flex-col items-center transition"></div>
+    <div v-bind:class="['img min-h-screen flex flex-col items-center transition', theme.isdark ? 'dark' : '']"></div>
     <div class="todo flex-1 lg:w-2/3 xl:w-2/5 w-full px-7">
       <RouterView />
     </div>
