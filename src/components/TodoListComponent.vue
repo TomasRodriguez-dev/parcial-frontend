@@ -4,10 +4,11 @@ import { reactive } from 'vue';
 // importar themeStore
 import { useThemeStore } from '@/store/ThemeStore';
 // importart taskStore
+import { useTaskStore } from '@/store/TaskStore';
 
 
 // importamos el modelo Task
-
+import type { Task } from '@/models/TaskModel';
 // iconos
 import { TrashIcon } from '@heroicons/vue/24/outline'
 import { CheckCircleIcon as CompletedIcon } from '@heroicons/vue/24/solid'
@@ -19,9 +20,13 @@ const themeStore = useThemeStore();
 const theme = reactive(themeStore);
 
 // definir variable para almacenar useTaskStore
+const taskStore = useTaskStore();
 // definir variable reactiva pasando objeto taskStore
+const tasks = reactive(taskStore);
 
-
+function removeTask(task: Task) {
+    taskStore.removeTask(task)
+}
 
 </script>
 
@@ -36,7 +41,7 @@ const theme = reactive(themeStore);
         </div>
 
         <!-- envoltura de la tarea, insertar v-for aca! -->
-        <div class="wrapper relative group border-black my-2 transition ease-linear">
+        <div v-for="task in tasks.data" :key="task.id" class="wrapper relative group border-black my-2 transition ease-linear">
             <form v-on:submit.prevent>
                     <div class="absolute top-3 sm:top-4 left-5">
 
@@ -53,15 +58,15 @@ const theme = reactive(themeStore);
 
                 <!-- usar v-model para pasar el texto de la tarea en input y usar v-bind:class para modo oscuro -->
                 <input
+                    v-model="task.tarea"
                     disabled
-
                     type="text"
                     class="tarea sm:text-base overflow-ellipsis w-full disabled:bg-white focus:outline-none py-4 sm:py-4.5 pr-8 pl-14 sm:pl-16 cursor-pointer transition ease-linear"
                     />
                 <div class="btns absolute right-0 top-0 py-2 sm:py-2.5 px-2 w-20 h-14 flex justify-around cursor-default" >
 
                     <!-- usar @click y llamar a funcion para borrar tarea -->
-                    <button class="p-1 cursor-pointer"><TrashIcon class="w-6 h-6 hover:text-red-500 "/></button> 
+                    <button @click="removeTask(task)" class="p-1 cursor-pointer"><TrashIcon class="w-6 h-6 hover:text-red-500 "/></button> 
                 </div>
 
                 <!-- indicador de tarea terminada, usar v-if segun corresponda -->

@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import type { ThemeModel } from "@/models/ThemeModel";
+import type { ThemeState } from "@/models/ThemeState";
 
 export const useThemeStore = defineStore({
     id: 'theme',
-    state: () : ThemeModel => ({
+    state: () : ThemeState => ({
         isdark: false,
         mode: 'LightMode'
     }),

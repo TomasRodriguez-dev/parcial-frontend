@@ -3,8 +3,10 @@
 // importar themeStore
 import { useThemeStore } from '@/store/ThemeStore';
 // importar taskStore
+import { useTaskStore } from '@/store/TaskStore';
 // importar modelo de tarea
 import { reactive } from 'vue'
+import type { Task } from '@/models/TaskModel';
 
 // iconos
 import { XMarkIcon, PlusCircleIcon } from '@heroicons/vue/24/outline'  
@@ -16,14 +18,15 @@ const themeStore = useThemeStore();
 const theme = reactive(themeStore);
 
 // definir variable para almacenar useTaskStore
+const taskStore = useTaskStore();
 // definir variable reactiva pasando objeto tasksStore
-
+const tasks = reactive(taskStore)
 
 // una vez importado el modelo Task reemplazar any con el mismo
-const newTask: any = {
+const newTask: Task = {
   id:  0,
   tarea:  '',
-  completada: false
+  status: false
 }
 
 const reactiveTask = reactive(newTask)
@@ -37,7 +40,7 @@ function makeItComplete(){
 // funcion para guardar tarea, debera pasar variable reactiveTask al metodo
 // en TaskStore
 function saveTask() {
-  //store.addTask(reactiveTask)
+  tasks.addTask(reactiveTask)
 }
 
 </script>
@@ -62,7 +65,7 @@ function saveTask() {
       <!-- input: usar v-bind para definir si es modo oscuro -->
       <!-- usar v-model para pasar los datos de la nueva tarea -->
       <input
-
+        v-model="newTask.tarea"
         type="text"
         placeholder="Escribe una nueva tarea"
         v-bind:class="['sm:text-base overflow-ellipsis w-full focus:outline-none py-4 sm:py-4.5 pr-8 pl-14 sm:pl-16 cursor-pointer transition ease-linear', theme.isdark ? 'dark' : '']"
@@ -70,10 +73,10 @@ function saveTask() {
 
       <!-- div: usar v-bind para definir si es modo oscuro -->
       <div v-bind:class="['btns absolute right-0 top-0 py-2 sm:py-2.5 px-2 w-20 h-14 flex justify-around cursor-default transition ease-linear', theme.isdark ? 'dark' : '']">
-        <button  class="p-1 cursor-pointer">
+        <button @click="saveTask" class="p-1 cursor-pointer">
           <!-- usar @click para usar metodo de guardar tareas -->
           <PlusCircleIcon class="w-6 h-6 hover:text-green-600"/>
-        </button class="p-1 cursor-pointer">
+        </button>
         <button >
           <XMarkIcon class="w-6 h-6 hover:text-red-500 "/>
         </button> 
